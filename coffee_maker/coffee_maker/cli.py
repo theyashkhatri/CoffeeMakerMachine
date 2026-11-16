@@ -6,8 +6,9 @@ from .machine import CoffeeMachine
 
 
 def main() -> None:
-    machine = CoffeeMachine()
+    machine = CoffeeMachine(auto_load=True)
     print("Coffee Maker ready. Drinks: espresso, latte, cappuccino.")
+    print("Commands: report, menu, restock, off.")
 
     while True:
         choice = input("What would you like? ").strip().lower()
@@ -17,8 +18,14 @@ def main() -> None:
         if choice == "report":
             print(machine.report())
             continue
+        if choice == "menu":
+            print(machine.list_menu())
+            continue
+        if choice == "restock":
+            print(machine.restock())
+            continue
         if choice not in machine.menu:
-            print("Please choose espresso, latte, cappuccino, report, or off.")
+            print("Please choose espresso, latte, cappuccino, report, menu, restock, or off.")
             continue
 
         try:
