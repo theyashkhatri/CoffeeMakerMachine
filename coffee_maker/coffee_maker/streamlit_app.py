@@ -3,13 +3,16 @@
 from __future__ import annotations
 
 from decimal import Decimal, InvalidOperation
+from pathlib import Path
+import sys
 
 import streamlit as st
 
 if __package__:
     from .machine import CoffeeMachine
-else:  # Streamlit executes this file directly, so import its sibling module.
-    from machine import CoffeeMachine
+else:  # Streamlit executes this file without package context.
+    sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+    from coffee_maker.machine import CoffeeMachine
 
 
 def _get_machine() -> CoffeeMachine:
@@ -20,7 +23,10 @@ def _get_machine() -> CoffeeMachine:
 
 def _render_inventory(machine: CoffeeMachine) -> None:
     st.subheader("Inventory")
-    st.code(machine.report(), language="text")
+    water, coffee, milk = st.columns(3)
+    water.metric("Water (ml)", machine.inventory.water)
+    coffee.metric("Coffee (g)", machine.inventory.coffee)
+    milk.metric("Milk (ml)", machine.inventory.milk)
 
 
 def main() -> None:
@@ -49,8 +55,6 @@ def main() -> None:
         brew_clicked = st.button("Brew drink", use_container_width=True, type="primary")
         restock_clicked = st.button("Restock machine", use_container_width=True)
 
-    _render_inventory(machine)
-
     if brew_clicked:
         try:
             result = machine.brew(drink_name, Decimal(str(payment)))
@@ -67,7 +71,8 @@ def main() -> None:
     if restock_clicked:
         message = machine.restock()
         st.info(message)
-        _render_inventory(machine)
+
+    _render_inventory(machine)
 
     st.subheader("Menu")
     menu_data = [
