@@ -1,56 +1,75 @@
 # Coffee Maker Machine
 
 A Python coffee machine simulator with a command-line interface and a
-Streamlit browser interface. It tracks water, coffee, and milk, checks stock
-before brewing, validates payment, calculates change, and persists inventory.
+Streamlit browser app. It checks inventory and payment before brewing, returns
+change, and saves inventory between runs.
 
 ## Features
 
-- Espresso, latte, and cappuccino
-- Payment validation and change calculation
-- Ingredient inventory checks and restocking
-- Inventory saved between runs in `coffee_maker_state.json`
-- Terminal CLI and browser-based Streamlit UI
+- Brew espresso, latte, or cappuccino
+- Validate payment and calculate change
+- Check ingredient availability before brewing
+- Restock the machine and display updated inventory
+- Persist inventory in `coffee_maker_state.json`
+- Use either the terminal CLI or browser-based Streamlit UI
 
-## Install
+## Menu and starting inventory
 
-From the repository root:
+| Drink | Price | Water | Coffee | Milk |
+|---|---:|---:|---:|---:|
+| Espresso | $1.50 | 50 ml | 18 g | 0 ml |
+| Latte | $2.50 | 200 ml | 24 g | 150 ml |
+| Cappuccino | $3.00 | 250 ml | 24 g | 100 ml |
+
+The machine starts with 1000 ml water, 100 g coffee, and 500 ml milk.
+Restocking restores those full levels.
+
+## Setup
+
+The Python package requires Python 3.10 or later. These commands create an
+environment outside the project folder and install the app with its Streamlit
+dependency. Use the same environment for installation and running:
 
 ```bash
-cd coffee_maker
 mkdir -p "$HOME/.venvs"
-python3 -m venv "$HOME/.venvs/coffee-maker"
-"$HOME/.venvs/coffee-maker/bin/python" -m pip install -e .
+python3 -m venv "$HOME/.venvs/coffee-maker-fresh"
+"$HOME/.venvs/coffee-maker-fresh/bin/python" -m pip --version
+"$HOME/.venvs/coffee-maker-fresh/bin/python" -m pip install -e /Volumes/Helumi/Projects/coffee_maker
 ```
 
-The virtual environment is stored outside the project folder to avoid
-interference from project-folder sync or file locking.
+If that environment already exists but its `pip` is broken, create a new one
+with a different name rather than clearing or reusing the broken environment.
 
-## Run the Streamlit UI
-
-From the repository root:
+## Run the Streamlit app
 
 ```bash
-"$HOME/.venvs/coffee-maker/bin/python" -m streamlit run coffee_maker/coffee_maker/streamlit_app.py
+cd /Volumes/Helumi/Projects/coffee_maker && \
+"$HOME/.venvs/coffee-maker-fresh/bin/python" -m streamlit run "$PWD/coffee_maker/streamlit_app.py"
 ```
 
-The UI lets you select a drink, enter payment, see the menu and current
-inventory, and restock the machine.
+Choose a drink, enter payment, then select **Brew drink**. The inventory
+metrics update after brewing or restocking. **Restock machine** resets stock
+to 1000 ml water, 100 g coffee, and 500 ml milk.
 
-## Run the CLI
+## Run the command-line app
 
 ```bash
-"$HOME/.venvs/coffee-maker/bin/python" -m coffee_maker
+cd /Volumes/Helumi/Projects/coffee_maker && \
+"$HOME/.venvs/coffee-maker-fresh/bin/python" -m coffee_maker
 ```
 
-Enter `espresso`, `latte`, or `cappuccino` to order. The CLI also supports
-`report`, `menu`, `restock`, and `off`.
+Enter `espresso`, `latte`, or `cappuccino` to order. Other commands:
+
+- `report` — show current stock
+- `menu` — show drinks and prices
+- `restock` — restore full inventory
+- `off` — quit
 
 ## Run tests
 
 ```bash
-cd coffee_maker
-"$HOME/.venvs/coffee-maker/bin/python" -m unittest discover -s tests -v
+cd /Volumes/Helumi/Projects/coffee_maker && \
+"$HOME/.venvs/coffee-maker-fresh/bin/python" -m unittest discover -s tests -v
 ```
 
 ## Project layout
