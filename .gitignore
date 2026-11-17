@@ -1,2 +1,8 @@
-coffee_maker/.venv/
+# Python environments and generated files
+**/.venv/
+**/__pycache__/
+*.py[cod]
+*.egg-info/
+
+# Runtime machine state
 coffee_maker/coffee_maker_state.json

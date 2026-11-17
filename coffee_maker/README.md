@@ -1,38 +1,43 @@
 # Coffee Maker
 
-A small, dependency-free command-line coffee maker simulator. It tracks water,
-milk, and coffee, checks stock before brewing, and handles payment and change
-using decimal arithmetic.
+A Python coffee machine simulator with a terminal CLI and a Streamlit browser
+interface. It checks inventory and payment before brewing and saves inventory
+to `coffee_maker_state.json` in the current working directory.
 
 ## Install
 
+Run these commands from the directory containing `pyproject.toml`:
+
 ```bash
-python3 -m pip install -e .
+mkdir -p "$HOME/.venvs"
+python3 -m venv "$HOME/.venvs/coffee-maker"
+"$HOME/.venvs/coffee-maker/bin/python" -m pip install -e .
 ```
 
-## Run
+The virtual environment is kept outside the project directory to avoid
+project-folder sync or file-lock problems.
+
+## Run the Streamlit UI
 
 From this directory:
 
 ```bash
-python3 -m coffee_maker
+"$HOME/.venvs/coffee-maker/bin/python" -m streamlit run coffee_maker/streamlit_app.py
 ```
 
-Or after installation:
+The browser UI supports selecting espresso, latte, or cappuccino, entering
+payment, viewing the menu and live inventory, and restocking.
+
+## Run the CLI
 
 ```bash
-coffee-maker
+"$HOME/.venvs/coffee-maker/bin/python" -m coffee_maker
 ```
 
-Choose `espresso`, `latte`, or `cappuccino`, then enter the amount paid in
-dollars (for example, `2.50`). Use `report` to view remaining ingredients,
-`menu` to view the drink list, `restock` to refill the machine, or `off` to quit.
-
-The machine now persists inventory to a `coffee_maker_state.json` file in the
-current working directory so your stock is restored between runs.
+Use `report`, `menu`, or `restock` to manage the machine, and `off` to quit.
 
 ## Run tests
 
 ```bash
-python3 -m unittest discover -s tests -v
+"$HOME/.venvs/coffee-maker/bin/python" -m unittest discover -s tests -v
 ```

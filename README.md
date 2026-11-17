@@ -1,86 +1,68 @@
 # Coffee Maker Machine
 
-A small Python command-line coffee machine simulator that lets you prepare drinks, validate payment, manage stock, and persist inventory between runs.
+A Python coffee machine simulator with a command-line interface and a
+Streamlit browser interface. It tracks water, coffee, and milk, checks stock
+before brewing, validates payment, calculates change, and persists inventory.
 
-## Overview
+## Features
 
-This project models a simple coffee maker with:
+- Espresso, latte, and cappuccino
+- Payment validation and change calculation
+- Ingredient inventory checks and restocking
+- Inventory saved between runs in `coffee_maker_state.json`
+- Terminal CLI and browser-based Streamlit UI
 
-- Drink selection for `espresso`, `latte`, and `cappuccino`
-- Ingredient tracking for water, coffee, and milk
-- Payment validation and automatic change calculation
-- Inventory checks before brewing
-- Full inventory restocking
-- Persistent state saved to `coffee_maker_state.json`
+## Install
 
-The logic is implemented in the `coffee_maker` package and can be run as a CLI or imported for programmatic use.
-
-## Project structure
-
-```text
-.
-├── LICENSE
-├── README.md
-└── coffee_maker/
-    ├── README.md
-    ├── pyproject.toml
-    ├── coffee_maker/
-    │   ├── __init__.py
-    │   ├── __main__.py
-    │   ├── cli.py
-    │   └── machine.py
-    └── tests/
-        └── test_machine.py
-```
-
-## Quick start
-
-From the `coffee_maker` directory:
+From the repository root:
 
 ```bash
 cd coffee_maker
-python3 -m pip install -e .
-python3 -m coffee_maker
+mkdir -p "$HOME/.venvs"
+python3 -m venv "$HOME/.venvs/coffee-maker"
+"$HOME/.venvs/coffee-maker/bin/python" -m pip install -e .
 ```
 
-Or, after installation:
+The virtual environment is stored outside the project folder to avoid
+interference from project-folder sync or file locking.
+
+## Run the Streamlit UI
+
+From the repository root:
 
 ```bash
-coffee-maker
+"$HOME/.venvs/coffee-maker/bin/python" -m streamlit run coffee_maker/coffee_maker/streamlit_app.py
 ```
 
-## CLI commands
+The UI lets you select a drink, enter payment, see the menu and current
+inventory, and restock the machine.
 
-When the app is running, you can enter:
+## Run the CLI
 
-- `espresso` — brew an espresso
-- `latte` — brew a latte
-- `cappuccino` — brew a cappuccino
-- `report` — view the current stock levels
-- `menu` — list available drinks and prices
-- `restock` — refill inventory to full capacity
-- `off` — exit the program
-
-When placing an order, you will be prompted for the amount paid in dollars, for example:
-
-```text
-What would you like? latte
-Payment in dollars: 3.00
+```bash
+"$HOME/.venvs/coffee-maker/bin/python" -m coffee_maker
 ```
 
-The machine validates whether the payment is enough and returns change if applicable.
+Enter `espresso`, `latte`, or `cappuccino` to order. The CLI also supports
+`report`, `menu`, `restock`, and `off`.
 
-## State persistence
-
-The machine stores its current inventory in a file named `coffee_maker_state.json` in the working directory. This makes the stock persist between runs.
-
-## Running tests
+## Run tests
 
 ```bash
 cd coffee_maker
-python3 -m unittest discover -s tests -v
+"$HOME/.venvs/coffee-maker/bin/python" -m unittest discover -s tests -v
 ```
 
-## License
+## Project layout
 
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+```text
+coffee_maker/
+├── coffee_maker/
+│   ├── cli.py
+│   ├── machine.py
+│   └── streamlit_app.py
+├── tests/
+└── pyproject.toml
+```
+
+See [LICENSE](LICENSE) for license details.

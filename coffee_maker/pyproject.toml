@@ -8,9 +8,13 @@ version = "0.1.0"
 description = "A command-line coffee maker machine simulator"
 readme = "README.md"
 requires-python = ">=3.10"
+dependencies = [
+    "streamlit>=1.38.0",
+]
 
 [project.scripts]
 coffee-maker = "coffee_maker.cli:main"
+coffee-maker-streamlit = "coffee_maker.streamlit_app:main"
 
 [tool.setuptools.packages.find]
 include = ["coffee_maker*"]
